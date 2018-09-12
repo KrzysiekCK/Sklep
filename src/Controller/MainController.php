@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
-use App\Entity\Products;
-use App\Entity\Types;
+use App\Entity\Magazine;
+use App\Entity\Product;
+use App\Entity\Type;
+use Doctrine\Common\Collections\Criteria;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,7 +17,7 @@ class MainController extends AbstractController {
      */
     public function homepage() {
         $em = $this->getDoctrine()->getManager();
-        $types = $em->getRepository(Types::class)->findBy(array(), array('name' => 'ASC'));
+        $types = $em->getRepository(Type::class)->findBy(array(), array('name' => 'ASC'));
         return $this->render('homepage.html.twig', [
             'title' => 'PTAK Moda Dla Ciebie',
             'types' => $types
@@ -23,23 +25,30 @@ class MainController extends AbstractController {
     }
 
     /**
-     * @Route("/products/{typesid}", name="app_products")
+     * @Route("/products/{type}", name="app_products")
      */
-    public function products($typesid) {
+    public function products($type) {
 
         $em = $this->getDoctrine()->getManager();
-        $types = $em->getRepository(Types::class)->findBy(array(), array('name' => 'ASC'));
-        if ($typesid == 'all') $typesid = $types;
-        $products = $em->getRepository(Products::class)->findBy(array('type' => $typesid), array('name' => 'ASC'));
+        $types = $em->getRepository(Type::class)->findBy(array(), array('name' => 'ASC'));
+        if ($type == 'all') {
+            $magazines = $em->getRepository(Magazine::class)->findAll();
+        } elseif ($type == 'new') {
+            $magazines = $em->getRepository(Magazine::class)->findBy(array('new' => true));
+        } elseif ($type == 'sale') {
+            $magazines = $em->getRepository(Magazine::class)->findAllSaleProducts();
+        } else {
+            $magazines = $em->getRepository(Magazine::class)->findByType($type);
+        }
 
         $images = array();
-        foreach ($products as $key => $entity) {
+        foreach ($magazines as $key => $entity) {
             $images[$key] = base64_encode(stream_get_contents($entity->getImage()));
         }
 
         return $this->render('products.html.twig', [
             'title' => 'Produkty',
-            'products' => $products,
+            'magazines' => $magazines,
             'types' => $types,
             'images' => $images
         ]);
@@ -51,8 +60,8 @@ class MainController extends AbstractController {
     public function productDetails($id) {
 
         $em = $this->getDoctrine()->getManager();
-        $types = $em->getRepository(Types::class)->findBy(array(), array('name' => 'ASC'));
-        $product = $em->getRepository(Products::class)->findOneBy(array('id' => $id));
+        $types = $em->getRepository(Type::class)->findBy(array(), array('name' => 'ASC'));
+        $magazine = $em->getRepository(Magazine::class)->findOneBy(array('id' => $id));
 
         // $images = array();
         // foreach ($products as $key => $entity) {
@@ -60,8 +69,8 @@ class MainController extends AbstractController {
         // }
 
         return $this->render('productdetails.html.twig', [
-            'title' => $product->getName(),
-            'product' => $product,
+            'title' => $magazine->getProduct()->getName(),
+            'magazine' => $magazine,
             'types' => $types
         ]);
     }

@@ -7,9 +7,9 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\ColorsRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\ColorRepository")
  */
-class Colors
+class Color
 {
     /**
      * @ORM\Id()
@@ -24,18 +24,18 @@ class Colors
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=16)
+     * @ORM\Column(type="string", length=32)
      */
     private $code;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Products", mappedBy="color")
+     * @ORM\OneToMany(targetEntity="App\Entity\Magazine", mappedBy="color")
      */
-    private $products;
+    private $magazines;
 
     public function __construct()
     {
-        $this->products = new ArrayCollection();
+        $this->magazines = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -68,30 +68,30 @@ class Colors
     }
 
     /**
-     * @return Collection|Products[]
+     * @return Collection|Magazine[]
      */
-    public function getProducts(): Collection
+    public function getMagazines(): Collection
     {
-        return $this->products;
+        return $this->magazines;
     }
 
-    public function addProduct(Products $product): self
+    public function addMagazine(Magazine $magazine): self
     {
-        if (!$this->products->contains($product)) {
-            $this->products[] = $product;
-            $product->setColor($this);
+        if (!$this->magazines->contains($magazine)) {
+            $this->magazines[] = $magazine;
+            $magazine->setColor($this);
         }
 
         return $this;
     }
 
-    public function removeProduct(Products $product): self
+    public function removeMagazine(Magazine $magazine): self
     {
-        if ($this->products->contains($product)) {
-            $this->products->removeElement($product);
+        if ($this->magazines->contains($magazine)) {
+            $this->magazines->removeElement($magazine);
             // set the owning side to null (unless already changed)
-            if ($product->getColor() === $this) {
-                $product->setColor(null);
+            if ($magazine->getColor() === $this) {
+                $magazine->setColor(null);
             }
         }
 

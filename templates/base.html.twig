@@ -27,26 +27,26 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
-                        <a class="nav-link dropdown-toggle" href="{{ path('app_products', {'typesid': 'all'}) }}" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle" href="{{ path('app_products', {'type': 'all'}) }}" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Produkty
                         </a>
                         <div class="dropdown-menu text-center" aria-labelledby="navbarDropdown">
-                            <h5 class="row">
+                            <div class="row fa-2x">
                                 <div class="col-sm-4">
-                                    <a class="dropdown-item" href="{{ path('app_products', {'typesid': 'all'}) }}"><i class="fa fa-cube" style="color: cadetblue"></i> Wszystkie</a>
+                                    <a class="dropdown-item" href="{{ path('app_products', {'type': 'all'}) }}"><i class="fa fa-cube all-style"></i> Wszystkie</a>
                                 </div>
                                 <div class="col-sm-4">
-                                    <a class="dropdown-item" href="#"><i class="fa fa-star" style="color: orange"></i> Nowości</a>
+                                    <a class="dropdown-item" href="{{ path('app_products', {'type': 'new'}) }}"><i class="fa fa-star new-style"></i> Nowości</a>
                                 </div>
                                 <div class="col-sm-4">
-                                    <a class="dropdown-item" href="#"><i class="fa fa-percent" style="color: darkred"></i> Wyprzedaż</a>
+                                    <a class="dropdown-item" href="{{ path('app_products', {'type': 'sale'}) }}"><i class="fa fa-percent sale-style"></i> Wyprzedaż</a>
                                 </div>
-                            </h5>
+                            </div>
                             <div class="dropdown-divider"></div>
                             <div class="row">
                                 {% for type in types %}
                                     <div class="col-sm-3">
-                                        <a class="dropdown-item" href="{{ path('app_products', {'typesid': type.id}) }}">{{ type.name }}</a>
+                                        <a class="dropdown-item" href="{{ path('app_products', {'type': type.id}) }}">{{ type.name }}</a>
                                     </div>
                                 {% endfor %}
                             </div>
@@ -58,13 +58,13 @@
                 </ul>
                 <form class="form-inline my-2 my-lg-0">
                     <input class="form-control mr-sm-2" type="search" placeholder="Szukaj" aria-label="Search">
-                    <button class="btn btn-secondary my-2 my-sm-0 button-size" type="submit">
+                    <button class="btn btn-outline-info my-2 my-sm-0 button-size" type="submit">
                         <i class="fa fa-search"></i> Szukaj
                     </button>
                 </form>
 
                 <div>
-                    <button type="button" class="btn btn-secondary dropdown-toggle ml-2 button-size" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <button type="button" class="btn btn-outline-info dropdown-toggle ml-2 button-size" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fa fa-shopping-cart"></i> Koszyk
                     </button>
                     <div class="dropdown-menu">

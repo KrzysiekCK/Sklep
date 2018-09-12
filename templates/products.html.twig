@@ -16,32 +16,56 @@
             </div>
         </div>
         <div class="row">
-                {% for key, product in products %}
-                    <div class="col-sm-3 p-1">
-                        <div class="card border-secondary text-center p-0 products-card">
-                            <div class="card-header">
-                                <h5>{{ product.name }}</h5>
-                            </div>
-                            <img class="card-img-top" src="data:image/jpeg;base64,{{ images[key] }}", alt="{{ product.name }}">
-                            <div class="card-block p-2" style="bottom: 0">
-                                <p class="card-text">{{ product.type.name }}</p>
-                                <a href="{{ path('app_product_details', {'id': product.id}) }}" class="btn btn-primary">Szczegóły</a>
+            {% for key, magazine in magazines %}
+                <div class="col-sm-3 p-1">
+                    <div class="card border-dark p-0 products-card">
+                        <img class="card-img-top text-center" src="data:image/jpeg;base64,{{ images[key] }}" alt="{{ magazine.product.name }}">
+                        {% if magazine.sale > 0 %}
+                            <b class="card-img-overlay sale-style fa-1-5x">-{{ magazine.sale }}<span class="fa fa-percent"></span></b>
+                        {% endif %}
+
+                        <div class="card-body flex-column d-flex">
+                            <div class="mt-auto">
+                                <h5 class="card-title" >{{ magazine.product.name }} - {{ magazine.color.name }}</h5>
+                                <p class="card-subtitle text-muted">{{ magazine.product.type.name }}
+                                    {% if magazine.new == true %}
+                                        <span class="fa fa-star new-style"></span> Nowość
+                                    {% endif %}
+                                </p>
+                                <div class="card-text">
+                                    {% if magazine.sale > 0 %}
+                                        <b class="fa-2x sale-style">{{ ((100 - magazine.sale) * magazine.product.price / 100)|round }} zł</b>
+                                        <s>{{ magazine.product.price }}</s>
+                                    {% else %}
+                                        <b class="card-text fa-2x">{{ magazine.product.price }} zł</b>
+                                    {% endif %}
+                                </div>
+                                <div class="btn-group" style="width: 100%">
+                                    <a class="card-link btn btn-outline-info" style="width: 50%" href="{{ path('app_product_details', {'id': magazine.id}) }}">Szczegóły</a>
+                                    <div class="card-link btn-group dropup" style="width: 50%">
+                                        <button type="button" class="btn btn-outline-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Do Koszyka</button>
+                                        <div class="dropdown-menu">
+                                            <h5 class="dropdown-header">Wybierz Rozmiar</h5>
+                                            {% if magazine.unisize == true %}
+                                                <a class="btn dropdown-item {% if magazine.xs > 0 %} disabled {% endif %}" href="#">Unisize: {{ magazine.unisize }}</a>
+                                            {% else %}
+                                                <a class="btn dropdown-item {% if magazine.xs == 0 %} disabled {% endif %}" href="#">XS: {{ magazine.xs }}</a>
+                                                <a class="btn dropdown-item {% if magazine.s == 0 %} disabled {% endif %}" href="#">S: {{ magazine.s }}</a>
+                                                <a class="btn dropdown-item {% if magazine.m == 0 %} disabled {% endif %}" href="#">M: {{ magazine.m }}</a>
+                                                <a class="btn dropdown-item {% if magazine.l == 0 %} disabled {% endif %}" href="#">L: {{ magazine.l }}</a>
+                                                <a class="btn dropdown-item {% if magazine.xl == 0 %} disabled {% endif %}" href="#">XL: {{ magazine.xl }}</a>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+                                </div>
                             </div>
                         </div>
                     </div>
-                   <!-- <div class="col-sm-3">
-                        <div class="row">
-                           <img class="products-img" src="data:image/jpeg;base64,{{ images[key] }}", alt="{{ product.name }}">
-                        </div>
-                        <div class="row">{{ product.name }}</div>
-                        <div class="row">{{ product.price }}</div>
-                        <div class="row">{{ product.type.name }}</div>
-                    </div>-->
-                {% endfor %}
+                </div>
+            {% endfor %}
         </div>
     </div>
-
-
 
     {#<div class="container">
     <div class="row">
