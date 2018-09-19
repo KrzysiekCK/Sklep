@@ -15,9 +15,7 @@
 
         <nav class="navbar navbar-bg align-items-end">
             <a class="navbar-brand" href="{{ path('app_homepage') }}"><img class="d-inline-block align-top navbar-brand" src="../images/brand.svg" alt="Brand"></a>
-            <button type="button" class="btn btn-outline-default button-size">
-                <i class="fa fa-plus"></i> Zaloguj Się
-            </button>
+            <button type="button" class="btn button-size"><span class="fa fa-sign-in"></span> Zaloguj Się</button>
         </nav>
 
         <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
@@ -30,7 +28,7 @@
                         <a class="nav-link dropdown-toggle" href="{{ path('app_products', {'type': 'all'}) }}" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Produkty
                         </a>
-                        <div class="dropdown-menu text-center" aria-labelledby="navbarDropdown">
+                        <div class="dropdown-menu text-center border-dark m-1" aria-labelledby="navbarDropdown">
                             <div class="row fa-2x">
                                 <div class="col-sm-4">
                                     <a class="dropdown-item" href="{{ path('app_products', {'type': 'all'}) }}"><i class="fa fa-cube all-style"></i> Wszystkie</a>
@@ -56,22 +54,26 @@
                         <a class="nav-link" href="{{ path('app_contact') }}">Kontakt</a>
                     </li>
                 </ul>
-                <form class="form-inline my-2 my-lg-0">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Szukaj" aria-label="Search">
-                    <button class="btn btn-outline-info my-2 my-sm-0 button-size" type="submit">
+                <div class="form-inline my-2 my-lg-0">
+
+                    {{ form_start(search) }}
+                    {{ form_widget(search.search, {label_attr: {class: 'form-control'}}) }}
+
+                    {#<input class="form-control mr-sm-2" type="search" placeholder="Szukaj" aria-label="Search">#}
+                    <button class="btn btn-outline-info my-2 my-sm-0 mr-sm-2 button-size" type="submit">
                         <i class="fa fa-search"></i> Szukaj
                     </button>
-                </form>
-
-                <div>
-                    <button type="button" class="btn btn-outline-info dropdown-toggle ml-2 button-size" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fa fa-shopping-cart"></i> Koszyk
+                    <button type="button" class="btn btn-outline-info dropdown-toggle button-size" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <i class="fa fa-shopping-basket"></i> Koszyk
                     </button>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">Action</a>
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Something else here</a>
+                    <div class="dropdown-menu border-dark m-1">
+                        {% for cart in app.session.get('cart') %}
+                            <div class="row">
+
+                                name: {{ cart[0].product.name }}
+                                size: {{ cart[1] }}
+                            </div>
+                        {% endfor %}
                     </div>
                 </div>
             </div>

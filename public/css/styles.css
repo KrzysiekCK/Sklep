@@ -1,9 +1,17 @@
 body {
     position: relative;
-    background: #ffffff;
+    background-color: #e2e2e2;
     min-height: 45rem;
-    padding-bottom: 320px;
+    padding-bottom: 310px;
     clear: both;
+}
+
+input[type="checkbox"] {
+    color: red;
+}
+
+. {
+    background-color: #AA3333;
 }
 
 html {height:100%}
@@ -23,8 +31,8 @@ html {height:100%}
 }
 
 .sale-style {
-    color: #a80000;
-}
+     color: #a80000;
+ }
 
 /* NAVIGATION */
 
@@ -47,17 +55,6 @@ html {height:100%}
 
 /* PRODUCTS PAGE */
 
-.products-card {
-    height: 100%;
-}
-
-.filter-card {
-    width: 100%;
-}
-
-.card-link {
-    position: relative;
-}
 
 /* PRODUCTSDETAILS PAGE */
 
