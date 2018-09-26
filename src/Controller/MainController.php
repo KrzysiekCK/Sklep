@@ -4,17 +4,15 @@ namespace App\Controller;
 
 use App\Entity\Color;
 use App\Entity\Magazine;
+use App\Entity\Product;
 use App\Entity\Type;
 use App\Form\Filter;
 use App\Form\Search;
 use function Sodium\add;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\RangeType;
 use Symfony\Component\Form\Extension\Core\Type\SearchType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -37,70 +35,22 @@ class MainController extends AbstractController {
 
     /**
      * @Route("/products/{type}", name="app_products")
+     * @Route("products/search", methods="GET", defaults={"type": "search"}, name="app_products_search")
+     * @Route("products/filter", methods="GET", defaults={"type": "filter"}, name="app_products_filter")
      */
     public function products(Request $request, $type) {
         $em = $this->getDoctrine()->getManager();
         $types = $em->getRepository(Type::class)->findBy(array(), array('name' => 'ASC'));
         $colors = $em->getRepository(Color::class)->findBy(array(), array('name' => 'ASC'));
+        $priceMax = 1000;//$em->getRepository(Product::class)->findByMaxPrice()->getPrice();
 
-        $typesArray = array();
-        foreach ($types as $key => $value) {
-            if ($type == $value->getId()) {
-                $typesArray += [$value->getId() => true];
-            } else {
-                $typesArray += [$value->getId() => false];
-            }
-        }
-        $colorsArray = array();
-        foreach ($colors as $key => $value) {
-            $colorsArray += [$value->getId() => false];
-        }
-        $sizesArray = array(
-            false, false, false, false, false, false
-        );
+        $filter = $this->getFilter($request, $type, $types, $colors, $priceMax);
 
-        $new = false;
-        $sale = false;
-        if ($type == 'new') $new = true;
-        if ($type == 'sale') $sale = true;
-        $offersArray = array($new, $sale);
-
-        $filter = new Filter();
-        $filter->setOffers($offersArray);
-        $filter->setTypes($typesArray);
-        $filter->setColors($colorsArray);
-        $filter->setSizes($sizesArray);
-
-
-
-        $magazines = $em->getRepository(Magazine::class)->findByFilters($filter);
-
-        $filterForm = $this->createFormBuilder($filter)
-            ->add('offers', CollectionType::class, array('entry_type' => CheckboxType::class, 'allow_add' => true))
-            ->add('types', CollectionType::class, array('entry_type' => CheckboxType::class, 'allow_add' => true))
-            ->add('colors', CollectionType::class, array('entry_type' => CheckboxType::class, 'allow_add' => true))
-            ->add('sizes', CollectionType::class, array('entry_type' => CheckboxType::class, 'allow_add' => true))
-            ->add('price', RangeType::class, array('attr' => array('min' => 5,'max' => 50)))
-            ->getForm();
-
-        $filterForm->handleRequest($request);
-        if ($filterForm->isSubmitted()) {
-            $filter = $filterForm->getData();
+        if ($type == "search") {
+            $magazines = $em->getRepository(Magazine::class)->findBySearch(new Search($request->get('search', '')));
+        } else {
             $magazines = $em->getRepository(Magazine::class)->findByFilters($filter);
         }
-
-
-        $search = new Search();
-        $searchForm = $this->createFormBuilder($search)
-            ->add('search', SearchType::class)
-            ->getForm();
-
-        $searchForm->handleRequest($request);
-        if ($searchForm->isSubmitted()) {
-            $search = $searchForm->getData();
-            $magazines = $em->getRepository(Magazine::class)->findBySearch($search);
-        }
-
 
         $images = array();
         foreach ($magazines as $key => $entity) {
@@ -113,9 +63,8 @@ class MainController extends AbstractController {
             'types' => $types,
             'colors' => $colors,
             'images' => $images,
-            'id' => $type,
-            'filter' => $filterForm->createView(),
-            'search' => $searchForm->createView()
+            'priceMax' => $priceMax,
+            'filter' => $filter
         ]);
     }
 
@@ -129,12 +78,6 @@ class MainController extends AbstractController {
         $types = $em->getRepository(Type::class)->findBy(array(), array('name' => 'ASC'));
         $magazine = $em->getRepository(Magazine::class)->findOneBy(array('id' => $id));
         $magazines = $em->getRepository(Magazine::class)->findBy(array('product' => $magazine->getProduct()->getId()));
-
-        // $images = array();
-        // foreach ($products as $key => $entity) {
-        //     $images[$key] = base64_encode(stream_get_contents($entity->getImage()));
-        // }
-
         $image = base64_encode(stream_get_contents($magazine->getImage()));
 
         return $this->render('details.html.twig', [
@@ -152,10 +95,56 @@ class MainController extends AbstractController {
     public function contact() {
         $em = $this->getDoctrine()->getManager();
         $types = $em->getRepository(Type::class)->findBy(array(), array('name' => 'ASC'));
+        $searchForm = $this->getSearchForm();
         return $this->render('contact.html.twig', [
             'title' => 'Kontakt',
             'types' => $types
         ]);
+    }
+
+    private function getFilter(Request $request, $type, $types, $colors, $priceMax) {
+        $typesArray = array();
+        foreach ($types as $key => $value) {
+            if ($type == $value->getId()) {
+                $typesArray += [$value->getId() => true];
+            } else {
+                $typesArray += [$value->getId() => (boolean) $request->get('type'.$value->getId(), false)];
+            }
+        }
+        $colorsArray = array();
+        foreach ($colors as $key => $value) {
+            $colorsArray += [$value->getId() => (boolean) $request->get('color'.$value->getId(), false)];
+        }
+        $sizesArray = array(
+            (boolean) $request->get('unisize', false),
+            (boolean) $request->get('sizeXS', false),
+            (boolean) $request->get('sizeS', false),
+            (boolean) $request->get('sizeM', false),
+            (boolean) $request->get('sizeL', false),
+            (boolean) $request->get('sizeXL', false)
+        );
+
+        $new = ($type == 'new' || (boolean) $request->get('offerNew', false)) ? true : false;
+        $sale = ($type == 'sale' || (boolean) $request->get('offerSale', false)) ? true : false;
+        $offersArray = array($new, $sale);
+
+        $priceFrom = $request->get('prizeFrom', 0);
+        $priceTo = $request->get('prizeTo', $priceMax);
+        $orderCategory = $request->get('orderCategory', 'product.name');
+        $orderDirection = $request->get('orderDirection', 'ASC');
+
+
+        return new Filter($offersArray, $typesArray, $colorsArray, $sizesArray, $priceFrom, $priceTo, $orderCategory, $orderDirection);
+    }
+
+    private function getFilterForm($filter) {
+        return $this->createFormBuilder($filter)
+            ->add('offers', CollectionType::class, array('entry_type' => CheckboxType::class, 'allow_add' => true))
+            ->add('types', CollectionType::class, array('entry_type' => CheckboxType::class, 'allow_add' => true))
+            ->add('colors', CollectionType::class, array('entry_type' => CheckboxType::class, 'allow_add' => true))
+            ->add('sizes', CollectionType::class, array('entry_type' => CheckboxType::class, 'allow_add' => true))
+            ->add('price', RangeType::class, array('attr' => array('min' => 5,'max' => 50)))
+            ->getForm();
     }
 
 }

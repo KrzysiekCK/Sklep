@@ -37,16 +37,19 @@ class MagazineRepository extends ServiceEntityRepository
 
     public function findByFilters($filter) {
         $qb = $this->createQueryBuilder('magazine')
-            ->leftJoin('magazine.product', 'product');
+            ->leftJoin('magazine.product', 'product')
+        ->leftJoin('magazine.color', 'color');
         return $filter->toQuery($qb);
     }
 
-    public function findBySearch($search) {
+    public function findBySearch($search)
+    {
         $qb = $this->createQueryBuilder('magazine')
             ->leftJoin('magazine.product', 'product')
             ->leftJoin('product.type', 'type');
         return $search->toQuery($qb);
     }
+
 
 //    /**
 //     * @return Magazine[] Returns an array of Magazine objects

@@ -54,15 +54,18 @@
                         <a class="nav-link" href="{{ path('app_contact') }}">Kontakt</a>
                     </li>
                 </ul>
-                <div class="form-inline my-2 my-lg-0">
+                <form action="{{ path('app_products_search') }}" method="get" class="form-inline my-2 my-lg-0">
 
-                    {{ form_start(search) }}
-                    {{ form_widget(search.search, {label_attr: {class: 'form-control'}}) }}
+                    {#{{ form_start(search) }}#}
+                    {#{{ form_widget(search.search, {label_attr: {class: 'form-control mr-3'}}) }}#}
 
-                    {#<input class="form-control mr-sm-2" type="search" placeholder="Szukaj" aria-label="Search">#}
+                    <input name="search" class="form-control mr-sm-2" type="search" placeholder="Szukaj" aria-label="Search">
                     <button class="btn btn-outline-info my-2 my-sm-0 mr-sm-2 button-size" type="submit">
                         <i class="fa fa-search"></i> Szukaj
                     </button>
+                    {#{{ form_end(search) }}#}
+                </form>
+                <div>
                     <button type="button" class="btn btn-outline-info dropdown-toggle button-size" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <i class="fa fa-shopping-basket"></i> Koszyk
                     </button>

@@ -1,17 +1,9 @@
 body {
     position: relative;
-    background-color: #e2e2e2;
+    background-color: white;
     min-height: 45rem;
     padding-bottom: 310px;
     clear: both;
-}
-
-input[type="checkbox"] {
-    color: red;
-}
-
-. {
-    background-color: #AA3333;
 }
 
 html {height:100%}
@@ -34,6 +26,11 @@ html {height:100%}
      color: #a80000;
  }
 
+.card-style {
+    background-color: #323232ff;
+    color: white;
+}
+
 /* NAVIGATION */
 
 .navbar-bg {
@@ -54,6 +51,7 @@ html {height:100%}
 }
 
 /* PRODUCTS PAGE */
+
 
 
 /* PRODUCTSDETAILS PAGE */

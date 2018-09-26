@@ -11,46 +11,117 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-3 p-1">
-                {{ form_start(filter) }}
-
-
-
+                {#{{ form_start(filter) }}#}
                 <div class="card border-secondary">
-                    <div class="card-body">
+                    <h5 class="card-header card-style"><span class="fa fa-cogs"></span> Filtry
+                    </h5>
+                    <form action="{{ path('app_products_filter') }}" method="get" class="card-body">
+                        <h5 class="card-subtitle">Sortuj Według</h5>
+                        <select name="orderCategory" class="custom-select">
+                            <option value="product.name" {% if filter.orderCategory == 'product.name' %} selected {% endif %}>Nazwy</option>
+                            <option value="product.type" {% if filter.orderCategory == 'product.type' %} selected {% endif %}>Produktu</option>
+                            <option value="color.name" {% if filter.orderCategory == 'color.name' %} selected {% endif %}>Koloru</option>
+                            <option value="product.price" {% if filter.orderCategory == 'product.price' %} selected {% endif %}>Ceny</option>
+                        </select>
+
+                        <div class="custom-control custom-radio">
+                            <div>
+                                <input type="radio" id="customRadio1" name="orderDirection" class="custom-control-input" value="ASC" {% if filter.orderDirection == 'ASC' %} checked {% endif %}>
+                                <label class="custom-control-label" for="customRadio1">Rosnąco</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="customRadio2" name="orderDirection" class="custom-control-input" value="DESC"{% if filter.orderDirection == 'DESC' %} checked {% endif %}>
+                                <label class="custom-control-label" for="customRadio2">Malejąco</label>
+                            </div>
+                        </div>
+
                         <h5 class="card-subtitle" data-toggle="collapse" data-target="#offerFilter" aria-expanded="false" aria-controls="offerFilter">Oferta</h5>
-                        <div class="collapse" id="offerFilter">
-                            {{ form_widget(filter.offers[0], {label_attr: {class: 'checkbox-custom'}, label: 'Nowości', required: false }) }}
-                            {{ form_widget(filter.offers[1], {label_attr: {class: 'checkbox-custom'}, label: 'Wyprzedaż', required: false }) }}
+                        <div class="custom-control custom-checkbox collapse" id="offerFilter">
+                            <div>
+                                <input name="offerNew" type="checkbox" class="custom-control-input" id="offer0" {% if filter.offers[0] %} checked {% endif %}>
+                                <label class="custom-control-label" for="offer0">Nowości</label>
+                            </div>
+                            <div>
+                                <input name="offerSale" type="checkbox" class="custom-control-input" id="offer1" {% if filter.offers[1] %} checked {% endif %}>
+                                <label class="custom-control-label" for="offer1">Wyprzedaż</label>
+                            </div>
+                            {#{{ form_widget(filter.offers[0], {label_attr: {class: 'checkbox-custom'}, label: 'Nowości', required: false }) }}#}
+                            {#{{ form_widget(filter.offers[1], {label_attr: {class: 'checkbox-custom'}, label: 'Wyprzedaż', required: false }) }}#}
                         </div>
                         <h5 class="card-subtitle mt-1" data-toggle="collapse" data-target="#productFilter" aria-expanded="false" aria-controls="productFilter" >Produkty</h5>
-                        <div class="collapse" id="productFilter" >
+                        <div class="custom-control custom-checkbox collapse" id="productFilter" >
                             {% for key, type in types %}
-                                {{ form_widget(filter.types[type.id], {label_attr: {class: 'checkbox-custom'}, label: type.name, required: false }) }}
+                                <div>
+                                    <input name="type{{ type.id }}" type="checkbox" class="custom-control-input" id="type{{ type.id }}" {% if filter.types[type.id] %} checked {% endif %}>
+                                    <label class="custom-control-label" for="type{{ type.id }}">{{ type.name }}</label>
+                                </div>
+                                {#{{ form_widget(filter.types[type.id], {label_attr: {class: 'checkbox-custom'}, label: type.name, required: false }) }}#}
                             {% endfor %}
                         </div>
                         <h5 class="card-subtitle mt-1" data-toggle="collapse" data-target="#colorFilter" aria-expanded="false" aria-controls="colorFilter">Kolor</h5>
-                        <div class="collapse" id="colorFilter">
+                        <div class="custom-control custom-checkbox collapse" id="colorFilter">
                             {% for key, color in colors %}
-                                {{ form_widget(filter.colors[color.id], {label_attr: {class: 'checkbox-custom'}, label: color.name, required: false }) }}
+                                <div>
+                                    <input name="color{{ color.id }}" type="checkbox" class="custom-control-input" id="color{{ color.id }}" {% if filter.colors[color.id] %} checked {% endif %}>
+                                    <label class="custom-control-label" for="color{{ color.id }}">{{ color.name }}</label>
+                                </div>
+                                {#{{ form_widget(filter.colors[color.id], {label_attr: {class: 'checkbox-custom'}, label: color.name, required: false }) }} #}
                             {% endfor %}
                         </div>
                         <h5 class="card-subtitle mt-1" data-toggle="collapse" data-target="#sizeFilter" aria-expanded="false" aria-controls="sizeFilter">Rozmiar</h5>
-                        <div class="collapse" id="sizeFilter">
-                            {{ form_widget(filter.sizes[0], {label_attr: {class: 'checkbox-custom'}, label: 'Unisex', required: false }) }}
-                            {{ form_widget(filter.sizes[1], {label_attr: {class: 'checkbox-custom'}, label: 'XS', required: false }) }}
-                            {{ form_widget(filter.sizes[2], {label_attr: {class: 'checkbox-custom'}, label: 'S', required: false }) }}
-                            {{ form_widget(filter.sizes[3], {label_attr: {class: 'checkbox-custom'}, label: 'M', required: false }) }}
-                            {{ form_widget(filter.sizes[4], {label_attr: {class: 'checkbox-custom'}, label: 'L', required: false }) }}
-                            {{ form_widget(filter.sizes[5], {label_attr: {class: 'checkbox-custom'}, label: 'XL', required: false }) }}
+                        <div class="custom-control custom-checkbox collapse" id="sizeFilter">
+                            <div>
+                                <input name="unisize" type="checkbox" class="custom-control-input" id="unisize" {% if filter.sizes[0] %} checked {% endif %}>
+                                <label class="custom-control-label" for="unisize">Unisize</label>
+                            </div>
+                            <div>
+                                <input name="sizeXS" type="checkbox" class="custom-control-input" id="sizeXS" {% if filter.sizes[1] %} checked {% endif %}>
+                                <label class="custom-control-label" for="sizeXS">XS</label>
+                            </div>
+                            <div>
+                                <input name="sizeS" type="checkbox" class="custom-control-input" id="sizeS" {% if filter.sizes[2] %} checked {% endif %}>
+                                <label class="custom-control-label" for="sizeS">S</label>
+                            </div>
+                            <div>
+                                <input name="sizeM" type="checkbox" class="custom-control-input" id="sizeM" {% if filter.sizes[3] %} checked {% endif %}>
+                                <label class="custom-control-label" for="sizeM">M</label>
+                            </div>
+                            <div>
+                                <input name="sizeL" type="checkbox" class="custom-control-input" id="sizeL" {% if filter.sizes[4] %} checked {% endif %}>
+                                <label class="custom-control-label" for="sizeL">L</label>
+                            </div>
+                            <div>
+                                <input name="sizeXL" type="checkbox" class="custom-control-input" id="sizeXL" {% if filter.sizes[5] %} checked {% endif %}>
+                                <label class="custom-control-label" for="sizeXL">XL</label>
+                            </div>
+                            {#{{ form_widget(filter.sizes[0], {label_attr: {class: 'checkbox-custom'}, label: 'Unisex', required: false }) }}#}
+                            {#{{ form_widget(filter.sizes[1], {label_attr: {class: 'checkbox-custom'}, label: 'XS', required: false }) }}#}
+                            {#{{ form_widget(filter.sizes[2], {label_attr: {class: 'checkbox-custom'}, label: 'S', required: false }) }}#}
+                            {#{{ form_widget(filter.sizes[3], {label_attr: {class: 'checkbox-custom'}, label: 'M', required: false }) }}#}
+                            {#{{ form_widget(filter.sizes[4], {label_attr: {class: 'checkbox-custom'}, label: 'L', required: false }) }}#}
+                            {#{{ form_widget(filter.sizes[5], {label_attr: {class: 'checkbox-custom'}, label: 'XL', required: false }) }}#}
                         </div>
                         <h5 class="card-subtitle mt-1">Cena</h5>
-                        {{ form_widget(filter.price, {label_attr: {class: 'range-custom'}, required: false }) }}
+                        <div>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="priceFrom">Od:</span>
+                                </div>
+                                <input name="prizeFrom" type="number" class="form-control" id="basic-url" aria-describedby="priceFrom" value="{{ filter.priceFrom }}">
+                            </div>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="priceFrom">Od:</span>
+                                </div>
+                                <input name="prizeTo" type="number" class="form-control" id="basic-url" aria-describedby="priceFrom" value="{{ filter.priceTo }}" aria-valuemax="{{ priceMax }}">
+                            </div>
+                        </div>
+
+                        {#{{ form_widget(filter.price, {label_attr: {class: 'range-custom'}, required: false }) }}#}
                         <button type="submit" class="btn btn-info"  style="width: 100%" >Zapisz</button>
-                    </div>
+                    </form>
                 </div>
-                {% for key, type in id %}
-                    <p>{{ key }} : {{ type }}</p>
-                {% endfor %}
+                {#{{ form_end(filter) }}#}
             </div>
 
             <div class="col-lg-9">
@@ -92,7 +163,7 @@
                                             <div class="btn-group" style="width: 100%">
                                                 <a class="card-link btn btn-outline-info" style="width: 100%" href="{{ path('app_details', {'id': magazine.id}) }}">Szczegóły</a>
                                                 <div class="card-link btn-group dropup" style="width: 100%">
-                                                    <button type="button" class="btn btn-outline-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Do Koszyka</button>
+                                                    <button type="button" class="btn btn-outline-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 100%">Do Koszyka</button>
                                                     <div class="dropdown-menu">
                                                         <h5 class="dropdown-header">Wybierz Rozmiar</h5>
                                                         {% if magazine.unisize == true %}

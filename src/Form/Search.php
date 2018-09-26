@@ -16,6 +16,16 @@ class Search {
     protected $search;
 
     /**
+     * Search constructor.
+     * @param $search
+     */
+    public function __construct($search)
+    {
+        $this->search = $search;
+    }
+
+
+    /**
      * @return mixed
      */
     public function getSearch()
@@ -34,6 +44,7 @@ class Search {
     public function toQuery(QueryBuilder $qb) {
         $qb->orWhere($qb->expr()->like('product.name', $qb->expr()->literal('%'.$this->search.'%')));
         $qb->orWhere($qb->expr()->like('type.name', $qb->expr()->literal('%'.$this->search.'%')));
+        $qb->orderBy('product.price', 'ASC');
         return $qb->getQuery()->getResult();
     }
 
