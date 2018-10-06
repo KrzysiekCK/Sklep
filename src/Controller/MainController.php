@@ -27,7 +27,7 @@ class MainController extends AbstractController {
         $em = $this->getDoctrine()->getManager();
         $types = $em->getRepository(Type::class)->findBy(array(), array('name' => 'ASC'));
 
-        return $this->render('homepage.html.twig', [
+        return $this->render('main/homepage.html.twig', [
             'title' => 'PTAK Moda Dla Ciebie',
             'types' => $types
         ]);
@@ -42,7 +42,7 @@ class MainController extends AbstractController {
         $em = $this->getDoctrine()->getManager();
         $types = $em->getRepository(Type::class)->findBy(array(), array('name' => 'ASC'));
         $colors = $em->getRepository(Color::class)->findBy(array(), array('name' => 'ASC'));
-        $priceMax = 1000;//$em->getRepository(Product::class)->findByMaxPrice()->getPrice();
+        $priceMax = $em->getRepository(Product::class)->findByMaxPrice();
 
         $filter = $this->getFilter($request, $type, $types, $colors, $priceMax);
 
@@ -57,7 +57,7 @@ class MainController extends AbstractController {
             $images += [$entity->getId() => base64_encode(stream_get_contents($entity->getImage()))];
         }
 
-        return $this->render('products.html.twig', [
+        return $this->render('main/products.html.twig', [
             'title' => 'Produkty',
             'magazines' => $magazines,
             'types' => $types,
@@ -80,7 +80,7 @@ class MainController extends AbstractController {
         $magazines = $em->getRepository(Magazine::class)->findBy(array('product' => $magazine->getProduct()->getId()));
         $image = base64_encode(stream_get_contents($magazine->getImage()));
 
-        return $this->render('details.html.twig', [
+        return $this->render('main/details.html.twig', [
             'title' => $magazine->getProduct()->getName(),
             'magazine' => $magazine,
             'magazines' => $magazines,
@@ -95,8 +95,7 @@ class MainController extends AbstractController {
     public function contact() {
         $em = $this->getDoctrine()->getManager();
         $types = $em->getRepository(Type::class)->findBy(array(), array('name' => 'ASC'));
-        $searchForm = $this->getSearchForm();
-        return $this->render('contact.html.twig', [
+        return $this->render('main/contact.html.twig', [
             'title' => 'Kontakt',
             'types' => $types
         ]);
@@ -130,7 +129,7 @@ class MainController extends AbstractController {
 
         $priceFrom = $request->get('prizeFrom', 0);
         $priceTo = $request->get('prizeTo', $priceMax);
-        $orderCategory = $request->get('orderCategory', 'product.name');
+        $orderCategory = $request->get('orderCategory', 'magazine.id');
         $orderDirection = $request->get('orderDirection', 'ASC');
 
 

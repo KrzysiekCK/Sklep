@@ -1,0 +1,355 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ parent() }}
+    {{ title }}
+
+{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+        {#<div class="row">#}
+            {#<div class="col-sm-12 p-2">#}
+                {#<div class="card card-light-style">#}
+                    {#<div class="card-body">#}
+
+                    {#</div>#}
+                {#</div>#}
+            {#</div>#}
+        {#</div>#}
+        <div class="row">
+            <div class="col-lg-3 p-2">
+                    <form class="accordion" id="filter" action="{{ path('app_products_filter') }}" method="get">
+
+                        <div class="card card-dark-style">
+                            <div class="card-header" id="headerForSort">
+                                <h5 class="card-title mb-0">
+                                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseForSort" aria-expanded="true" aria-controls="collapseForSort">
+                                        Sortuj Według
+                                    </button>
+                                </h5>
+                            </div>
+                            <div id="collapseForSort" class="collapse show" aria-labelledby="headerForSort" data-parent="#filter">
+                                <div class="card-body">
+                                    <select name="orderCategory" class="custom-select mb-2">
+                                        <option value="product.name" {% if filter.orderCategory == 'product.name' %} selected {% endif %}>Nazwy</option>
+                                        <option value="product.type" {% if filter.orderCategory == 'product.type' %} selected {% endif %}>Produktu</option>
+                                        <option value="color.name" {% if filter.orderCategory == 'color.name' %} selected {% endif %}>Koloru</option>
+                                        <option value="product.price" {% if filter.orderCategory == 'product.price' %} selected {% endif %}>Ceny</option>
+                                    </select>
+
+                                    <div class="custom-control custom-radio">
+                                        <input type="radio" id="customRadio1" name="orderDirection" class="custom-control-input" value="ASC" {% if filter.orderDirection == 'ASC' %} checked {% endif %}>
+                                        <label class="custom-control-label" for="customRadio1">Rosnąco</label>
+                                    </div>
+                                    <div class="custom-control custom-radio">
+                                        <input type="radio" id="customRadio2" name="orderDirection" class="custom-control-input" value="DESC"{% if filter.orderDirection == 'DESC' %} checked {% endif %}>
+                                        <label class="custom-control-label" for="customRadio2">Malejąco</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card card-dark-style">
+                            <div class="card-header" id="headerForOffer">
+                                <h5 class="card-title mb-0">
+                                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseForOffer" aria-expanded="true" aria-controls="collapseForOffer">
+                                        Oferta
+                                    </button>
+                                </h5>
+                            </div>
+                            <div id="collapseForOffer" class="collapse" aria-labelledby="headingForOffer" data-parent="#filter">
+                                <div class="card-body">
+                                    <div class="custom-control custom-checkbox">
+                                        <input name="offerNew" type="checkbox" class="custom-control-input" id="offer0" {% if filter.offers[0] %} checked {% endif %}>
+                                        <label class="custom-control-label" for="offer0">Nowości <span class="badge badge-light"> {% for magazine in magazines %}{% if magazine.new %} + {% endif %}{% endfor %}</span></label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox">
+                                        <input name="offerSale" type="checkbox" class="custom-control-input" id="offer1" {% if filter.offers[1] %} checked {% endif %}>
+                                        <label class="custom-control-label" for="offer1">Wyprzedaż</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card card-dark-style">
+                            <div class="card-header" id="headerForType">
+                                <h5 class="card-title mb-0">
+                                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseForType" aria-expanded="true" aria-controls="collapseForType">
+                                        Produkty
+                                    </button>
+                                </h5>
+                            </div>
+                            <div id="collapseForType" class="collapse" aria-labelledby="headerForType" data-parent="#filter">
+                                <div class="card-body">
+                                    {% for key, type in types %}
+                                        <div class="custom-control custom-checkbox">
+                                            <input name="type{{ type.id }}" type="checkbox" class="custom-control-input" id="type{{ type.id }}" {% if filter.types[type.id] %} checked {% endif %}>
+                                            <label class="custom-control-label" for="type{{ type.id }}">{{ type.name }}</label>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card card-dark-style">
+                            <div class="card-header" id="headerForColor">
+                                <h5 class="card-title mb-0">
+                                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseForColor" aria-expanded="true" aria-controls="collapseForColor">
+                                        Kolor
+                                    </button>
+                                </h5>
+                            </div>
+                            <div id="collapseForColor" class="collapse" aria-labelledby="headerForColor" data-parent="#filter">
+                                <div class="card-body">
+                                    {% for key, color in colors %}
+                                        <div class="custom-control custom-checkbox">
+                                            <input name="color{{ color.id }}" type="checkbox" class="custom-control-input" id="color{{ color.id }}" {% if filter.colors[color.id] %} checked {% endif %}>
+                                            <label class="custom-control-label" for="color{{ color.id }}">{{ color.name }}</label>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card card-dark-style">
+                            <div class="card-header" id="headerForSize">
+                                <h5 class="card-title mb-0">
+                                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseForSize" aria-expanded="true" aria-controls="collapseForSize">
+                                        Rozmiar
+                                    </button>
+                                </h5>
+                            </div>
+                            <div id="collapseForSize" class="collapse" aria-labelledby="headerForSize" data-parent="#filter">
+                                <div class="card-body">
+                                    <div class="custom-control custom-checkbox">
+                                        <input name="unisize" type="checkbox" class="custom-control-input" id="unisize" {% if filter.sizes[0] %} checked {% endif %}>
+                                        <label class="custom-control-label" for="unisize">Unisize</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox">
+                                        <input name="sizeXS" type="checkbox" class="custom-control-input" id="sizeXS" {% if filter.sizes[1] %} checked {% endif %}>
+                                        <label class="custom-control-label" for="sizeXS">XS</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox">
+                                        <input name="sizeS" type="checkbox" class="custom-control-input" id="sizeS" {% if filter.sizes[2] %} checked {% endif %}>
+                                        <label class="custom-control-label" for="sizeS">S</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox">
+                                        <input name="sizeM" type="checkbox" class="custom-control-input" id="sizeM" {% if filter.sizes[3] %} checked {% endif %}>
+                                        <label class="custom-control-label" for="sizeM">M</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox">
+                                        <input name="sizeL" type="checkbox" class="custom-control-input" id="sizeL" {% if filter.sizes[4] %} checked {% endif %}>
+                                        <label class="custom-control-label" for="sizeL">L</label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox">
+                                        <input name="sizeXL" type="checkbox" class="custom-control-input" id="sizeXL" {% if filter.sizes[5] %} checked {% endif %}>
+                                        <label class="custom-control-label" for="sizeXL">XL</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card card-dark-style">
+                            <div class="card-header" id="headerForPrice">
+                                <h5 class="card-title mb-0">
+                                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseForPrice" aria-expanded="true" aria-controls="collapseForPrice">
+                                        Cena
+                                    </button>
+                                </h5>
+                            </div>
+                            <div id="collapseForPrice" class="collapse" aria-labelledby="headerForPrice" data-parent="#filter">
+                                <div class="card-body">
+                                    <div class="input-group mb-2 mt-1">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="priceFrom">Od:</span>
+                                        </div>
+                                        <input name="prizeFrom" type="number" class="form-control" id="basic-url" aria-describedby="priceFrom" value="{{ filter.priceFrom }}" min="0" max="{{ priceMax }}">
+                                    </div>
+                                    <div class="input-group mb-2">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="priceFrom">Do:</span>
+                                        </div>
+                                        <input name="prizeTo" type="number" class="form-control" id="basic-url" aria-describedby="priceFrom" value="{{ filter.priceTo }}" min="0" max="{{ priceMax }}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card card-dark-style">
+                            <div class="card-body">
+                                <button type="submit" class="btn btn-primary"  style="width: 100%" ><span class="fa fa-save"></span> Zapisz Filtry</button>
+                            </div>
+                        </div>
+                    </form>
+            </div>
+
+            <div class="col-lg-9">
+                <div class="row">
+                    {% if magazines == null %}
+                        <div class="col-lg-12 p-2">
+                            <div class="card card-light-style text-center">
+                                <div class="card-body">
+                                    <div class="card-title fa-5x"><span class="fa fa-blind"></span>Nie widzę...</div>
+                                    <p class="card-text"> Brak produktów zgodnych z podanymi kryteriami.</p>
+                                </div>
+                            </div>
+                        </div>
+                    {% else %}
+                        {% for key, magazine in magazines %}
+                            <div class="col-lg-4 p-2">
+                                <div class="card card-light-style" style="height: 100%">
+                                    <div class="card-img-overlay flex-row d-flex">
+                                        {% if magazine.new == true %}
+                                            <h5 class="mr-auto new-style"><span class="fa fa-star"></span> Nowość</h5>
+                                        {% endif %}
+                                        {% if magazine.sale > 0 %}
+                                            <h5 class="ml-auto sale-style">-{{ magazine.sale }} <span class="fa fa-percent"></span></h5>
+                                        {% endif %}
+                                    </div>
+                                    <img class="card-img-top" src="data:image/jpeg;base64,{{ images[magazine.id] }}" alt="{{ magazine.product.name }}">
+                                    <div class="card-body flex-column d-flex">
+                                        <div class="mt-auto">
+                                            <h5 class="card-title" >{{ magazine.product.name }} - {{ magazine.color.name }}</h5>
+                                            <p class="card-subtitle text-muted">{{ magazine.product.type.name }}</p>
+                                            <div class="card-text">
+                                                {% if magazine.sale > 0 %}
+                                                    <b class="fa-2x sale-style">{{ ((100 - magazine.sale) * magazine.product.price / 100)|round }} zł</b>
+                                                    <s>{{ magazine.product.price }}</s>
+                                                {% else %}
+                                                    <b class="card-text fa-2x">{{ magazine.product.price }} zł</b>
+                                                {% endif %}
+                                            </div>
+                                            <div class="btn-group" style="width: 100%">
+                                                <a class="card-link btn btn-info" style="width: 100%" href="{{ path('app_details', {'id': magazine.id}) }}">Szczegóły</a>
+                                                <div class="card-link btn-group dropup" style="width: 100%">
+                                                    <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 100%">Do Koszyka</button>
+                                                    <div class="dropdown-menu">
+                                                        <h5 class="dropdown-header">Wybierz Rozmiar</h5>
+                                                        {% if magazine.unisize == true %}
+                                                            <a class="btn dropdown-item {% if magazine.xs > 0 %} disabled {% endif %}" href="#">Unisize: {{ magazine.unisize }}</a>
+                                                        {% else %}
+                                                            <a class="btn dropdown-item {% if magazine.xs == 0 %} disabled {% endif %}" href="{{ path('app_update_cart', {'magazine': magazine.id, 'size': 'xs'}) }}">XS: {{ magazine.xs }}</a>
+                                                            <a class="btn dropdown-item {% if magazine.s == 0 %} disabled {% endif %}" href="{{ path('app_update_cart', {'magazine': magazine.id, 'size': 's'}) }}">S: {{ magazine.s }}</a>
+                                                            <a class="btn dropdown-item {% if magazine.m == 0 %} disabled {% endif %}" href="{{ path('app_update_cart', {'magazine': magazine.id, 'size': 'm'}) }}">M: {{ magazine.m }}</a>
+                                                            <a class="btn dropdown-item {% if magazine.l == 0 %} disabled {% endif %}" href="{{ path('app_update_cart', {'magazine': magazine.id, 'size': 'l'}) }}">L: {{ magazine.l }}</a>
+                                                            <a class="btn dropdown-item {% if magazine.xl == 0 %} disabled {% endif %}" href="{{ path('app_update_cart', {'magazine': magazine.id, 'size': 'xl'}) }}">XL: {{ magazine.xl }}</a>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {#<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="show-article-container p-3 mt-4">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <img class="show-article-img" src="images/asteroid.jpeg">
+                        <div class="show-article-title-container d-inline-block pl-3 align-middle">
+                            <span class="show-article-title ">{{ title }}</span>
+                            <br>
+                            <span class="align-left article-details"><img class="article-author-img rounded-circle" src="images/alien-profile.png"> Mike Ferengi </span>
+                            <span class="pl-2 article-details"> 3 hours ago</span>
+                            <span class="pl-2 article-details">
+                                <span class="js-like-article-count">5</span>
+                                <a href="{{ path('app_homepage') }}" class="fa fa-heart-o like-article js-like-article"></a>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="article-text">
+                            <p>Spicy jalapeno bacon ipsum dolor amet veniam shank in dolore. Ham hock nisi landjaeger cow,
+                                lorem proident beef ribs aute enim veniam ut cillum pork chuck picanha. Dolore reprehenderit
+                                labore minim pork belly spare ribs cupim short loin in. Elit exercitation eiusmod dolore cow
+                                turkey shank eu pork belly meatball non cupim.</p>
+
+                            <p>Laboris beef ribs fatback fugiat eiusmod jowl kielbasa alcatra dolore velit ea ball tip. Pariatur
+                                laboris sunt venison, et laborum dolore minim non meatball. Shankle eu flank aliqua shoulder,
+                                capicola biltong frankfurter boudin cupim officia. Exercitation fugiat consectetur ham. Adipisicing
+                                picanha shank et filet mignon pork belly ut ullamco. Irure velit turducken ground round doner incididunt
+                                occaecat lorem meatball prosciutto quis strip steak.</p>
+
+                            <p>Meatball adipisicing ribeye bacon strip steak eu. Consectetur ham hock pork hamburger enim strip steak
+                                mollit quis officia meatloaf tri-tip swine. Cow ut reprehenderit, buffalo incididunt in filet mignon
+                                strip steak pork belly aliquip capicola officia. Labore deserunt esse chicken lorem shoulder tail consectetur
+                                cow est ribeye adipisicing. Pig hamburger pork belly enim. Do porchetta minim capicola irure pancetta chuck
+                                fugiat.</p>
+
+                            <p>Sausage tenderloin officia jerky nostrud. Laborum elit pastrami non, pig kevin buffalo minim ex quis. Pork belly
+                                pork chop officia anim. Irure tempor leberkas kevin adipisicing cupidatat qui buffalo ham aliqua pork belly
+                                exercitation eiusmod. Exercitation incididunt rump laborum, t-bone short ribs buffalo ut shankle pork chop
+                                bresaola shoulder burgdoggen fugiat. Adipisicing nostrud chicken consequat beef ribs, quis filet mignon do.
+                                Prosciutto capicola mollit shankle aliquip do dolore hamburger brisket turducken eu.</p>
+
+                            <p>Do mollit deserunt prosciutto laborum. Duis sint tongue quis nisi. Capicola qui beef ribs dolore pariatur.
+                                Minim strip steak fugiat nisi est, meatloaf pig aute. Swine rump turducken nulla sausage. Reprehenderit pork
+                                belly tongue alcatra, shoulder excepteur in beef bresaola duis ham bacon eiusmod. Doner drumstick short loin,
+                                adipisicing cow cillum tenderloin.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <p class="share-icons mb-5"><span class="pr-1">Share:</span> <i class="pr-1 fa fa-facebook-square"></i><i class="pr-1 fa fa-twitter-square"></i><i class="pr-1 fa fa-reddit-square"></i><i class="pr-1 fa fa-share-alt-square"></i></p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h3><i class="pr-3 fa fa-comment"></i>{{ products|length }} Comments</h3>
+                        <hr>
+
+                        <div class="row mb-5">
+                            <div class="col-sm-12">
+                                <img class="comment-img rounded-circle" src="images/astronaut-profile.png">
+                                <div class="comment-container d-inline-block pl-3 align-top">
+                                    <span class="commenter-name">Amy Oort</span>
+                                    <div class="form-group">
+                                        <textarea class="form-control comment-form" id="articleText" rows="1"></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-info">Comment</button>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        {% for comment in comments %}
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <img class="comment-img rounded-circle" src="images/alien-profile.png">
+                                <div class="comment-container d-inline-block pl-3 align-top">
+                                    <span class="commenter-name">Mike Ferengi</span>
+                                    <br>
+                                    <span class="comment"> {{ comment }}</span>
+                                    <p><a href="#">Reply</a></p>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+#}
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script src="js/article_show.js"></script>
+{% endblock %}

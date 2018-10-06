@@ -20,14 +20,13 @@ class ProductRepository extends ServiceEntityRepository
     }
 
     public function findByMaxPrice() {
-        $qb = $this->createQueryBuilder('product');
-        $qb->select('product')
-            ->where($qb->expr()->max('product.price'))->getQuery()->getOneOrNullResult();
-
-
-
-        $qb->where($qb->expr()->max('product.price'));
-        return $qb->getQuery()->getResult();
+        $qb = $this->createQueryBuilder('product')
+            ->select('MAX(product.price)');
+//        $qb->select('product')
+//            ->where($qb->expr()->max('product.price'));
+        //$qb->where($qb->expr()->eq('product.price', $qb->expr()->max('product.price')));
+//        $qb->having($qb->expr()->eq('product.price', $qb->expr()->max('product.price')));
+        return $qb->getQuery()->getSingleScalarResult();
     }
 
 //    /**
