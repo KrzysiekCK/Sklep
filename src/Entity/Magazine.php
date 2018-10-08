@@ -71,43 +71,6 @@ class Magazine
      */
     private $xl;
 
-    private $productRB;
-
-    private $colorRB;
-
-    /**
-     * @return mixed
-     */
-    public function getProductRB()
-    {
-        return $this->productRB;
-    }
-
-    /**
-     * @param mixed $productRB
-     */
-    public function setProductRB($productRB): void
-    {
-        $this->productRB = $productRB;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getColorRB()
-    {
-        return $this->colorRB;
-    }
-
-    /**
-     * @param mixed $colorRB
-     */
-    public function setColorRB($colorRB): void
-    {
-        $this->colorRB = $colorRB;
-    }
-
-
     public function getId(): ?int
     {
         return $this->id;

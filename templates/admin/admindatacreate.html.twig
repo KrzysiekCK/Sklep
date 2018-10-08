@@ -1,0 +1,104 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ parent() }}
+    {{ title }}
+{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 p-2">
+                <div class="card card-light-style">
+                    <div class="card-body">
+                        <ul class="nav nav-tabs mb-4" id="adminCreateTabs" role="tablist">
+                            <li class="nav-item">
+                                <a {% if type == 'magazines' %}class="nav-link active" aria-selected="true"{% else %}class="nav-link" aria-selected="false"{% endif %} id="magazines-tab" data-toggle="tab" href="#magazines" role="tab" aria-controls="magazines">
+                                    Dodaj Nową Pozycję
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a {% if type == 'products' %}class="nav-link active" aria-selected="true"{% else %}class="nav-link" aria-selected="false"{% endif %} id="products-tab" data-toggle="tab" href="#products" role="tab" aria-controls="products">
+                                    Dodaj Produkt
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a {% if type == 'types' %}class="nav-link active" aria-selected="true"{% else %}class="nav-link" aria-selected="false"{% endif %} id="types-tab" data-toggle="tab" href="#types" role="tab" aria-controls="types">
+                                    Dodaj Typ
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a {% if type == 'colors' %}class="nav-link active" aria-selected="true"{% else %}class="nav-link" aria-selected="false"{% endif %} id="colors-tab" data-toggle="tab" href="#colors" role="tab" aria-controls="colors">
+                                    Dodaj Kolor
+                                </a>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="adminCreateTabsContent">
+                            {#pozycje magazynowe#}
+                            <div class="tab-pane fade {% if type == 'magazines' %}show active{% endif %}" id="magazines" role="tabpanel" aria-labelledby="magazines-tab">
+                                <div class="row">
+                                    <div class="col-sm-12 flex-column d-flex">
+                                        {{ form_start(formMagazine) }}
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                {{ form_row(formMagazine.product) }}
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="col-sm-12">
+                                                {#{{ formMagazine.product.vars.choices[formMagazine.product.vars.value].data.name }}#}
+                                                {{ dump(formMagazine.product.vars.value) }}
+                                            </div>
+                                        </div>
+                                        <span class="fa fa-circle" {% if formMagazine.vars.value.color is not null %}style="background-color: {{ formMagazine.vars.value.color.code }}"{% endif %}>
+                                        </span>
+                                        <button class="btn btn-primary button-size ml-auto" type="submit"><span class="fa fa-save"></span> Zapisz</button>
+                                        {{ form_end(formMagazine) }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            {#produkty#}
+                            <div class="tab-pane fade {% if type == 'products' %}show active{% endif %}" id="products" role="tabpanel" aria-labelledby="products-tab">
+                                <div class="row">
+                                    <div class="col-sm-12 flex-column d-flex">
+                                        {{ form_start(formProduct) }}
+                                        <button class="btn btn-primary button-size ml-auto" type="submit"><span class="fa fa-save"></span> Zapisz</button>
+                                        {{ form_end(formProduct) }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            {#typy#}
+                            <div class="tab-pane fade {% if type == 'types' %}show active{% endif %}" id="types" role="tabpanel" aria-labelledby="types-tab">
+                                <div class="row">
+                                    <div class="col-sm-12 flex-column d-flex">
+                                        {{ form_start(formType) }}
+                                        <button class="btn btn-primary button-size ml-auto" type="submit"><span class="fa fa-save"></span> Zapisz</button>
+                                        {{ form_end(formType) }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            {#kolory#}
+                            <div class="tab-pane fade {% if type == 'colors' %}show active{% endif %}" id="colors" role="tabpanel" aria-labelledby="colors-tab">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        {{ form_start(formColor) }}
+                                        {{ form_row(formColor.name) }}
+                                        {{ form_row(formColor.code) }}
+                                        <button class="btn btn-primary button-size" type="submit" style="right: 0"><span class="fa fa-save"></span> Zapisz</button>
+                                        {{ form_end(formColor) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

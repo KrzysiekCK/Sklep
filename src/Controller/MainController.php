@@ -15,7 +15,7 @@ use Symfony\Component\Form\Extension\Core\Type\RangeType;
 use Symfony\Component\Form\Extension\Core\Type\SearchType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class MainController extends AbstractController {
@@ -35,8 +35,8 @@ class MainController extends AbstractController {
 
     /**
      * @Route("/products/{type}", name="app_products")
-     * @Route("products/search", methods="GET", defaults={"type": "search"}, name="app_products_search")
-     * @Route("products/filter", methods="GET", defaults={"type": "filter"}, name="app_products_filter")
+     * @Route("/products/search", methods="GET", defaults={"type": "search"}, name="app_products_search")
+     * @Route("/products/filter", methods="GET", defaults={"type": "filter"}, name="app_products_filter")
      */
     public function products(Request $request, $type) {
         $em = $this->getDoctrine()->getManager();
@@ -70,7 +70,7 @@ class MainController extends AbstractController {
 
 
     /**
-     * @Route("/details/{id}", name="app_details")
+     * @Route("product-details/{id}", name="app_details")
      */
     public function productDetails($id) {
 

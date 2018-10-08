@@ -2,6 +2,7 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
+   xmlns:osb="http://www.openswatchbook.org/uri/2009/osb"
    xmlns:dc="http://purl.org/dc/elements/1.1/"
    xmlns:cc="http://creativecommons.org/ns#"
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
@@ -17,7 +18,29 @@
    inkscape:version="0.92.3 (2405546, 2018-03-11)"
    sodipodi:docname="brand.svg">
   <defs
-     id="defs918" />
+     id="defs918">
+    <linearGradient
+       id="linearGradient6061"
+       osb:paint="solid">
+      <stop
+         style="stop-color:#323232;stop-opacity:1;"
+         offset="0"
+         id="stop6059" />
+    </linearGradient>
+    <filter
+       inkscape:collect="always"
+       style="color-interpolation-filters:sRGB"
+       id="filter6081"
+       x="-0.036"
+       width="1.072"
+       y="-0.036"
+       height="1.072">
+      <feGaussianBlur
+         inkscape:collect="always"
+         stdDeviation="0.36134299"
+         id="feGaussianBlur6083" />
+    </filter>
+  </defs>
   <sodipodi:namedview
      id="base"
      pagecolor="#ffffff"
@@ -26,7 +49,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="3.959798"
-     inkscape:cx="59.967619"
+     inkscape:cx="-2.7881074"
      inkscape:cy="36.097856"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
@@ -56,7 +79,7 @@
      id="layer1"
      transform="translate(0,-271.99998)">
     <circle
-       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#323232;stroke-width:0.91047043;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+       style="opacity:1;fill:#ffffff;fill-opacity:0.49019608;stroke:none;stroke-width:0.91000002;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:10.92000024, 0.91000002000000002;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal;filter:url(#filter6081)"
        id="path4413-2-2"
        cx="12.500002"
        cy="284.49997"
@@ -64,7 +87,7 @@
        inkscape:export-ydpi="96"
        r="12.044766" />
     <circle
-       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#323232;stroke-width:0.88743579;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#323232;stroke-width:0.88700003;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
        id="path4413-9"
        cx="12.509194"
        cy="284.55423"

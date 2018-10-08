@@ -38,12 +38,14 @@
                         </div>
                         <br>
                         <h5 class="card-title">Dostępne Kolory</h5>
-
-                        <p>
+                        <div class="d-inline-flex">
                             {% for magazine in magazines %}
-                                <a class="card-link" href="{{ path('app_details', {'id': magazine.id}) }}"><span class="fa fa-square fa-1-5x" style="color: {{ magazine.color.code }}"></span></a>
+                                <a href="{{ path('app_details', {'id': magazine.id}) }}">
+                                    <div class="card rounded-circle color-card-big" style="background-color: {{ magazine.color.code }}"></div>
+                                </a>
                             {% endfor %}
-                        </p>
+                        </div>
+                        <br>
                         <h5 class="card-title">Wybierz Rozmiar</h5>
                         <div class="btn-group btn-group-toggle" data-toggle="buttons" style="width: 100%">
                             {% if magazine.unisize == true %}

@@ -2,5 +2,7 @@ index:
     path: /
     controller: App\Controller\MainController::homepage
 
+
+
 logout:
     path: /logout

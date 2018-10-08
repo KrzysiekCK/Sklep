@@ -47,6 +47,22 @@ html {height:100%}
     border: none;
 }
 
+.color-card-small {
+    margin: 1px;
+    width: 15px;
+    height: 15px
+}
+
+.color-card-big {
+    margin: 3px;
+    width: 30px;
+    height: 30px
+}
+
+.card {
+    border-radius: 7px;
+}
+
 /* NAVIGATION */
 
 .navbar-bg {
@@ -56,13 +72,14 @@ html {height:100%}
     align-content: center;
 }
 
-.dropdown-menu, .dropdown-menu.show {
-    right: 0;
-}
+/*.dropdown-menu, .dropdown-menu.show {*/
+    /*right: 0;*/
+/*}*/
 
 .navbar-brand {
-    width: 150px;
-    height: 150px;
+    width: 170px;
+    height: 170px;
+    margin-bottom: 10px;
 }
 
 .navbar-buttons {

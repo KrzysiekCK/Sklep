@@ -13,8 +13,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AccountType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
+    public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder
             ->add('login', TextType::class, array(
                 'label' => 'Login'
@@ -48,8 +47,7 @@ class AccountType extends AbstractType
         ;
     }
 
-    public function configureOptions(OptionsResolver $resolver)
-    {
+    public function configureOptions(OptionsResolver $resolver) {
         $resolver->setDefaults(array(
             'data_class' => Account::class,
         ));

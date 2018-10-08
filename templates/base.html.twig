@@ -25,37 +25,58 @@
             </nav>
 
             {% if is_granted('ROLE_ADMIN') %}
-                <nav class="navbar-expand-lg" style="background-color: transparent">
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ path('app_admin_read_data') }}">Magazyn</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{{ path('app_admin_create_data') }}">Wprowadzanie</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/">Klienci</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/">Zamówienia</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/">Statystyki</a>
-                        </li>
-                    </ul>
-                </nav>
-            {% else %}
-                <nav class="navbar navbar-expand-lg navbar-light" style="background-color: rgba(255,255,255,0.31)">
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <nav class="navbar navbar-expand-lg navbar-light" style="background-color: rgba(255,255,255,0.5)">
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#adminNav" aria-controls="adminNav" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
-                    <div class="collapse navbar-collapse" id="navbarNav">
+                    <div class="collapse navbar-collapse" id="adminNav">
                         <ul class="navbar-nav mr-auto">
                             <li class="nav-item">
-                                <a class="nav-link dropdown-toggle" href="{{ path('app_products', {'type': 'all'}) }}" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <a class="nav-link dropdown-toggle" href="{{ path('app_admin_data_show') }}" id="adminNavDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Magazyn
+                                </a>
+                                <div class="dropdown-menu text-center border-dark m-1" aria-labelledby="adminNavDropdown">
+                                    <a class="dropdown-item" href="{{ path('app_admin_data_show_by_type', {'type': 'magazines'}) }}">Pozycje Magazynowe</a>
+                                    <a class="dropdown-item" href="{{ path('app_admin_data_show_by_type', {'type': 'products'}) }}">Produkty</a>
+                                    <a class="dropdown-item" href="{{ path('app_admin_data_show_by_type', {'type': 'types'}) }}">Typy</a>
+                                    <a class="dropdown-item" href="{{ path('app_admin_data_show_by_type', {'type': 'colors'}) }}">Kolory</a>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link dropdown-toggle" href="{{ path('app_admin_data_create') }}" id="adminNavDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Dodaj
+                                </a>
+                                <div class="dropdown-menu text-center border-dark m-1" aria-labelledby="adminNavDropdown">
+                                    <a class="dropdown-item" href="{{ path('app_admin_data_create_by_type', {'type': 'magazines'}) }}">Pozycje Magazynową</a>
+                                    <a class="dropdown-item" href="{{ path('app_admin_data_create_by_type', {'type': 'products'}) }}">Produkt</a>
+                                    <a class="dropdown-item" href="{{ path('app_admin_data_create_by_type', {'type': 'types'}) }}">Typ</a>
+                                    <a class="dropdown-item" href="{{ path('app_admin_data_create_by_type', {'type': 'colors'}) }}">Kolor</a>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/">Klienci</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/">Zamówienia</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/">Statystyki</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            {% else %}
+                <nav class="navbar navbar-expand-lg navbar-light" style="background-color: rgba(255,255,255,0.5)">
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#normalNav" aria-controls="normalNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="normalNav">
+                        <ul class="navbar-nav mr-auto">
+                            <li class="nav-item">
+                                <a class="nav-link dropdown-toggle" href="{{ path('app_products', {'type': 'all'}) }}" id="normalNavDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     Produkty
                                 </a>
-                                <div class="dropdown-menu text-center border-dark m-1" aria-labelledby="navbarDropdown">
+                                <div class="dropdown-menu text-center border-dark m-1" aria-labelledby="normalNavDropdown">
                                     <div class="row fa-2x">
                                         <div class="col-sm-4">
                                             <a class="dropdown-item" href="{{ path('app_products', {'type': 'all'}) }}"><i class="fa fa-cube all-style"></i> Wszystkie</a>
