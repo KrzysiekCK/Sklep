@@ -12,7 +12,7 @@
             <div class="col-sm-12 p-2">
                 <div class="card card-light-style">
                     <div class="card-body">
-                        <ul class="nav nav-tabs mb-4" id="adminShowTabs" role="tablist">
+                        <ul class="nav nav-pills" id="adminShowTabs" role="tablist">
                             <li class="nav-item">
                                 <a {% if type == 'magazines' %}class="nav-link active" aria-selected="true"{% else %}class="nav-link" aria-selected="false"{% endif %} id="magazines-tab" data-toggle="tab" href="#magazines" role="tab" aria-controls="magazines">
                                     Pozycje magazynowe
@@ -34,15 +34,23 @@
                                 </a>
                             </li>
                         </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 p-2">
+                <div class="card card-light-style">
+                    <div class="card-body">
                         <div class="tab-content" id="adminShowTabsContent">
                             {#pokaż pozycje magazynowe#}
                             <div class="tab-pane fade {% if type == 'magazines' %}show active{% endif %}" id="magazines" role="tabpanel" aria-labelledby="magazines-tab">
                                 <div class="row">
                                     <div class="col-sm-12 flex-column d-flex">
                                         <div class="form-inline">
-                                            <form action="" method="get" class="form-inline my-2 my-lg-0">
+                                            <form action="" method="get">
                                                 <input name="search" class="form-control mr-sm-2" type="search" placeholder="Szukaj" aria-label="Search">
-                                                <button class="btn btn-primary my-2 my-sm-0 mr-sm-2 button-size" type="submit">
+                                                <button class="btn btn-primary mr-sm-2 button-size" type="submit">
                                                     <i class="fa fa-search"></i> Szukaj
                                                 </button>
                                             </form>

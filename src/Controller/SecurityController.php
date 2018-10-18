@@ -16,7 +16,8 @@ class SecurityController extends AbstractController
     /**
      * @Route("security/login", name="app_login")
      */
-    public function login(AuthenticationUtils $authenticationUtils) {
+    public function login(AuthenticationUtils $authenticationUtils)
+    {
         $em = $this->getDoctrine()->getManager();
         $types = $em->getRepository(Type::class)->findBy(array(), array('name' => 'ASC'));
 
@@ -34,7 +35,8 @@ class SecurityController extends AbstractController
     /**
      * @Route("security/register", name="app_register")
      */
-    public function register(Request $request, UserPasswordEncoderInterface $encoder) {
+    public function register(Request $request, UserPasswordEncoderInterface $encoder)
+    {
         $em = $this->getDoctrine()->getManager();
         $types = $em->getRepository(Type::class)->findBy(array(), array('name' => 'ASC'));
 

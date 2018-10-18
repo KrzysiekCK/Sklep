@@ -18,12 +18,14 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class MainController extends AbstractController {
+class MainController extends AbstractController
+{
 
     /**
      * @Route("/home", name="app_homepage")
      */
-    public function homepage() {
+    public function homepage()
+    {
         $em = $this->getDoctrine()->getManager();
         $types = $em->getRepository(Type::class)->findBy(array(), array('name' => 'ASC'));
 
@@ -38,7 +40,8 @@ class MainController extends AbstractController {
      * @Route("/products/search", methods="GET", defaults={"type": "search"}, name="app_products_search")
      * @Route("/products/filter", methods="GET", defaults={"type": "filter"}, name="app_products_filter")
      */
-    public function products(Request $request, $type) {
+    public function products(Request $request, $type)
+    {
         $em = $this->getDoctrine()->getManager();
         $types = $em->getRepository(Type::class)->findBy(array(), array('name' => 'ASC'));
         $colors = $em->getRepository(Color::class)->findBy(array(), array('name' => 'ASC'));
@@ -72,7 +75,8 @@ class MainController extends AbstractController {
     /**
      * @Route("product-details/{id}", name="app_details")
      */
-    public function productDetails($id) {
+    public function productDetails($id)
+    {
 
         $em = $this->getDoctrine()->getManager();
         $types = $em->getRepository(Type::class)->findBy(array(), array('name' => 'ASC'));
@@ -92,7 +96,8 @@ class MainController extends AbstractController {
     /**
      * @Route("/contact", name="app_contact")
      */
-    public function contact() {
+    public function contact()
+    {
         $em = $this->getDoctrine()->getManager();
         $types = $em->getRepository(Type::class)->findBy(array(), array('name' => 'ASC'));
         return $this->render('main/contact.html.twig', [
@@ -101,30 +106,31 @@ class MainController extends AbstractController {
         ]);
     }
 
-    private function getFilter(Request $request, $type, $types, $colors, $priceMax) {
+    private function getFilter(Request $request, $type, $types, $colors, $priceMax)
+    {
         $typesArray = array();
         foreach ($types as $key => $value) {
             if ($type == $value->getId()) {
                 $typesArray += [$value->getId() => true];
             } else {
-                $typesArray += [$value->getId() => (boolean) $request->get('type'.$value->getId(), false)];
+                $typesArray += [$value->getId() => (boolean)$request->get('type' . $value->getId(), false)];
             }
         }
         $colorsArray = array();
         foreach ($colors as $key => $value) {
-            $colorsArray += [$value->getId() => (boolean) $request->get('color'.$value->getId(), false)];
+            $colorsArray += [$value->getId() => (boolean)$request->get('color' . $value->getId(), false)];
         }
         $sizesArray = array(
-            (boolean) $request->get('unisize', false),
-            (boolean) $request->get('sizeXS', false),
-            (boolean) $request->get('sizeS', false),
-            (boolean) $request->get('sizeM', false),
-            (boolean) $request->get('sizeL', false),
-            (boolean) $request->get('sizeXL', false)
+            (boolean)$request->get('unisize', false),
+            (boolean)$request->get('sizeXS', false),
+            (boolean)$request->get('sizeS', false),
+            (boolean)$request->get('sizeM', false),
+            (boolean)$request->get('sizeL', false),
+            (boolean)$request->get('sizeXL', false)
         );
 
-        $new = ($type == 'new' || (boolean) $request->get('offerNew', false)) ? true : false;
-        $sale = ($type == 'sale' || (boolean) $request->get('offerSale', false)) ? true : false;
+        $new = ($type == 'new' || (boolean)$request->get('offerNew', false)) ? true : false;
+        $sale = ($type == 'sale' || (boolean)$request->get('offerSale', false)) ? true : false;
         $offersArray = array($new, $sale);
 
         $priceFrom = $request->get('prizeFrom', 0);
@@ -134,16 +140,6 @@ class MainController extends AbstractController {
 
 
         return new Filter($offersArray, $typesArray, $colorsArray, $sizesArray, $priceFrom, $priceTo, $orderCategory, $orderDirection);
-    }
-
-    private function getFilterForm($filter) {
-        return $this->createFormBuilder($filter)
-            ->add('offers', CollectionType::class, array('entry_type' => CheckboxType::class, 'allow_add' => true))
-            ->add('types', CollectionType::class, array('entry_type' => CheckboxType::class, 'allow_add' => true))
-            ->add('colors', CollectionType::class, array('entry_type' => CheckboxType::class, 'allow_add' => true))
-            ->add('sizes', CollectionType::class, array('entry_type' => CheckboxType::class, 'allow_add' => true))
-            ->add('price', RangeType::class, array('attr' => array('min' => 5,'max' => 50)))
-            ->getForm();
     }
 
 }

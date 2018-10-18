@@ -12,7 +12,7 @@
             <div class="col-sm-12 p-2">
                 <div class="card card-light-style">
                     <div class="card-body">
-                        <ul class="nav nav-tabs mb-4" id="adminCreateTabs" role="tablist">
+                        <ul class="nav nav-pills" id="adminCreateTabs" role="tablist">
                             <li class="nav-item">
                                 <a {% if type == 'magazines' %}class="nav-link active" aria-selected="true"{% else %}class="nav-link" aria-selected="false"{% endif %} id="magazines-tab" data-toggle="tab" href="#magazines" role="tab" aria-controls="magazines">
                                     Dodaj Nową Pozycję
@@ -34,6 +34,14 @@
                                 </a>
                             </li>
                         </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12 p-2">
+                <div class="card card-light-style">
+                    <div class="card-body">
                         <div class="tab-content" id="adminCreateTabsContent">
                             {#pozycje magazynowe#}
                             <div class="tab-pane fade {% if type == 'magazines' %}show active{% endif %}" id="magazines" role="tabpanel" aria-labelledby="magazines-tab">
@@ -41,17 +49,35 @@
                                     <div class="col-sm-12 flex-column d-flex">
                                         {{ form_start(formMagazine) }}
                                         <div class="row">
-                                            <div class="col-sm-12">
+                                            <div class="col-sm-6">
                                                 {{ form_row(formMagazine.product) }}
+                                            </div>
+                                            <div class="col-sm-6">
+                                                {{ form_row(formMagazine.color) }}
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                {{ form_row(formMagazine.sale) }}
+                                            </div>
+                                            <div class="col-sm-6">
+                                                {{ form_row(formMagazine.new) }}
                                             </div>
                                         </div>
                                         <div>
                                             <div class="col-sm-12">
                                                 {#{{ formMagazine.product.vars.choices[formMagazine.product.vars.value].data.name }}#}
-                                                {{ dump(formMagazine.product.vars.value) }}
+                                                {{ formMagazine.product.vars.value }}
                                             </div>
                                         </div>
-                                        <span class="fa fa-circle" {% if formMagazine.vars.value.color is not null %}style="background-color: {{ formMagazine.vars.value.color.code }}"{% endif %}>
+                                        <div class="row">
+                                            <div class="col-sm-2">{{ form_row(formMagazine.unisize) }}</div>
+                                            <div class="col-sm-2">{{ form_row(formMagazine.xs) }}</div>
+                                            <div class="col-sm-2">{{ form_row(formMagazine.s) }}</div>
+                                            <div class="col-sm-2">{{ form_row(formMagazine.m) }}</div>
+                                            <div class="col-sm-2">{{ form_row(formMagazine.l) }}</div>
+                                            <div class="col-sm-2">{{ form_row(formMagazine.xl) }}</div>
+                                        </div>
                                         </span>
                                         <button class="btn btn-primary button-size ml-auto" type="submit"><span class="fa fa-save"></span> Zapisz</button>
                                         {{ form_end(formMagazine) }}
@@ -72,26 +98,33 @@
 
                             {#typy#}
                             <div class="tab-pane fade {% if type == 'types' %}show active{% endif %}" id="types" role="tabpanel" aria-labelledby="types-tab">
+                                {{ form_start(formType) }}
                                 <div class="row">
-                                    <div class="col-sm-12 flex-column d-flex">
-                                        {{ form_start(formType) }}
-                                        <button class="btn btn-primary button-size ml-auto" type="submit"><span class="fa fa-save"></span> Zapisz</button>
-                                        {{ form_end(formType) }}
+                                    <div class="col-sm-12">
+                                        {{ form_row(formType.name) }}
+                                        <button class="btn btn-primary button-size" type="submit"><span class="fa fa-save"></span> Zapisz</button>
                                     </div>
                                 </div>
+                                {{ form_end(formType) }}
                             </div>
 
                             {#kolory#}
                             <div class="tab-pane fade {% if type == 'colors' %}show active{% endif %}" id="colors" role="tabpanel" aria-labelledby="colors-tab">
+                                {{ form_start(formColor) }}
                                 <div class="row">
-                                    <div class="col-sm-12">
-                                        {{ form_start(formColor) }}
+                                    <div class="col-sm-6">
                                         {{ form_row(formColor.name) }}
+                                    </div>
+                                    <div class="col-sm-6">
                                         {{ form_row(formColor.code) }}
-                                        <button class="btn btn-primary button-size" type="submit" style="right: 0"><span class="fa fa-save"></span> Zapisz</button>
-                                        {{ form_end(formColor) }}
                                     </div>
                                 </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <button class="btn btn-primary button-size" type="submit" style="right: 0"><span class="fa fa-save"></span> Zapisz</button>
+                                    </div>
+                                </div>
+                            {{ form_end(formColor) }}
                             </div>
                         </div>
 

@@ -14,7 +14,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-class AdminController extends AbstractController {
+class AdminController extends AbstractController
+{
 
     /**
      * @Route("/admin", name="admin")
@@ -30,7 +31,8 @@ class AdminController extends AbstractController {
      * @Route("/magazine", defaults={"type":"magazines"}, name="app_admin_data_show")
      * @Route("/magazine/{type}", name="app_admin_data_show_by_type")
      */
-    public function adminShowData(Request $request, $type) {
+    public function adminShowData(Request $request, $type)
+    {
         $em = $this->getDoctrine()->getManager();
         $magazines = $em->getRepository(Magazine::class)->findAll();
         $products = $em->getRepository(Product::class)->findAll();
@@ -57,7 +59,8 @@ class AdminController extends AbstractController {
      * @Route("/insert", defaults={"type":"magazines"}, name="app_admin_data_create")
      * @Route("/insert/{type}", name="app_admin_data_create_by_type")
      */
-    public function adminCreateData(Request $request, $type) {
+    public function adminCreateData(Request $request, $type)
+    {
         $em = $this->getDoctrine()->getManager();
 
         $magazine = new Magazine();

@@ -11,7 +11,8 @@ namespace App\Form;
 
 use Doctrine\ORM\QueryBuilder;
 
-class Search {
+class Search
+{
 
     protected $search;
 
@@ -19,7 +20,7 @@ class Search {
      * Search constructor.
      * @param $search
      */
-    public function __construct($search)
+    public function Ł__construct($search)
     {
         $this->search = $search;
     }
@@ -41,9 +42,10 @@ class Search {
         $this->search = $search;
     }
 
-    public function toQuery(QueryBuilder $qb) {
-        $qb->orWhere($qb->expr()->like('product.name', $qb->expr()->literal('%'.$this->search.'%')));
-        $qb->orWhere($qb->expr()->like('type.name', $qb->expr()->literal('%'.$this->search.'%')));
+    public function toQuery(QueryBuilder $qb)
+    {
+        $qb->orWhere($qb->expr()->like('product.name', $qb->expr()->literal('%' . $this->search . '%')));
+        $qb->orWhere($qb->expr()->like('type.name', $qb->expr()->literal('%' . $this->search . '%')));
         $qb->orderBy('product.price', 'ASC');
         return $qb->getQuery()->getResult();
     }

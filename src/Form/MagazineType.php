@@ -22,7 +22,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class MagazineType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options) {
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
         $builder
             ->add('product', EntityType::class, array(
                 'label' => 'Produkt',
@@ -32,6 +33,9 @@ class MagazineType extends AbstractType
                         ->orderBy('product.name', 'ASC');
                 },
                 'choice_label' => 'name',
+                'choice_value' => function (Product $entity = null) {
+                    return $entity ? $entity->getId() : '';
+                },
                 'multiple' => false,
                 'expanded' => false,
             ))
@@ -77,17 +81,10 @@ class MagazineType extends AbstractType
                 'label' => 'XL'
             ));
 
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
-            $magazine = $event->getData();
-            $form = $event->getForm();
-
-            if ($magazine->getUnisize() > 0) {
-                $form->getData();
-            }
-        });
     }
 
-    public function configureOptions(OptionsResolver $resolver) {
+    public function configureOptions(OptionsResolver $resolver)
+    {
         $resolver->setDefaults(array(
             'data_class' => Magazine::class,
         ));

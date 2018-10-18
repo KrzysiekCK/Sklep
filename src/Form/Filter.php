@@ -11,7 +11,8 @@ namespace App\Form;
 
 use Doctrine\ORM\QueryBuilder;
 
-class Filter {
+class Filter
+{
     protected $offers;
     protected $types;
     protected $colors;
@@ -32,7 +33,8 @@ class Filter {
      * @param $orderCategory
      * @param $orderDirection
      */
-    public function __construct($offers, $types, $colors, $sizes, $priceFrom, $priceTo, $orderCategory, $orderDirection) {
+    public function __construct($offers, $types, $colors, $sizes, $priceFrom, $priceTo, $orderCategory, $orderDirection)
+    {
         $this->offers = $offers;
         $this->types = $types;
         $this->colors = $colors;
@@ -171,7 +173,8 @@ class Filter {
         $this->orderDirection = $orderDirection;
     }
 
-    public function toQuery(QueryBuilder $qb) {
+    public function toQuery(QueryBuilder $qb)
+    {
         //oferta
         $orX = $qb->expr()->orX();
         if ($this->offers[0] == true) $orX->add($qb->expr()->eq('magazine.new', true));
